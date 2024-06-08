@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  outline: 0;
+  border: 0;
+  padding: 0;
+  width: fit-content;
+}
+
+.mod-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.mod-source-url {
+  text-decoration: none;
+  color: rgba(27,217,106,.7);
+  font-weight: bolder;
+}
