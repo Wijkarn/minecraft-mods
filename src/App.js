@@ -21,21 +21,23 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    async function getData() {
-      try {
-        const newMods = {};
-        for (const mod of mods) {
-          const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
-          const data = await response.json();
-          newMods[mod] = data;
+    if (mods) {
+      async function getData() {
+        try {
+          const newMods = {};
+          for (const mod of mods) {
+            const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
+            const data = await response.json();
+            newMods[mod] = data;
+          }
+          setData(newMods);
         }
-        setData(newMods);
+        catch (e) {
+          console.error(e);
+        }
       }
-      catch (e) {
-        console.error(e);
-      }
+      getData();
     }
-    getData();
   }, [mods]);
 
   return (
