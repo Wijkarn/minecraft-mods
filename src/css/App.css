@@ -3,16 +3,23 @@
   outline: 0;
   border: 0;
   padding: 0;
-  width: fit-content;
 }
 
 .mod-div {
   display: flex;
   flex-direction: column;
+  margin: 1%;
+  border: red 1px solid;
+  padding: 2%;
 }
 
 .mod-source-url {
   text-decoration: none;
-  color: rgba(27,217,106,.7);
+  color: rgba(27, 217, 106, .7);
   font-weight: bolder;
+}
+
+#mods-div {
+  display: flex;
+  flex-flow: row wrap;
 }
