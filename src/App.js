@@ -50,21 +50,23 @@ export default function App() {
   }, [mods]);
 
   return (
-    <div id="mods-div">
-      {data ? (
-        Object.keys(data).map(mod => {
-          const modObj = data[mod];
-          return (
-            <div key={mod} className="mod-div">
-              <span>{modObj.title} latest verson: {modObj.game_versions[modObj.game_versions.length - 1]}</span>
-              <a href={`https://modrinth.com/mod/${mod}`} target="_blank" rel="noreferrer" className="mod-source-url">Download page </a>
-              {modObj.source_url ? <a href={modObj.source_url} target="_blank" rel="noreferrer" className="mod-source-url">Source url</a> : <span>No source url</span>}
-            </div>
-          )
-        })
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+    <main>
+      <div id="mods-div">
+        {data ? (
+          Object.keys(data).map(mod => {
+            const modObj = data[mod];
+            return (
+              <div key={mod} className="mod-div">
+                <span>{modObj.title} latest verson: {modObj.game_versions[modObj.game_versions.length - 1]}</span>
+                <a href={`https://modrinth.com/mod/${mod}`} target="_blank" rel="noreferrer" className="mod-source-url">Download page </a>
+                {modObj.source_url ? <a href={modObj.source_url} target="_blank" rel="noreferrer" className="mod-source-url">Source url</a> : <span>No source url</span>}
+              </div>
+            )
+          })
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
+    </main>
   );
 }
