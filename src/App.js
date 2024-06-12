@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./css/App.css";
+import FilterButton from "./components/FilterButton";
+import ModsContainer from "./components/ModsContainer";
 
 export default function App() {
-  const [data, setData] = useState();
-  const [mods, setMods] = useState();
+  const [allMods, setAllMods] = useState();
+  const [modNames, setModNames] = useState();
+  const [gameVersions, setGameVersions] = useState();
+  const [displayGameVersion, setDisplayGameVersion] = useState();
 
   useEffect(() => {
     async function mods() {
       try {
         const response = await fetch("https://minecraft-mods-page-default-rtdb.europe-west1.firebasedatabase.app/.json");
         const data = await response.json();
-        setMods(data);
+        setModNames(data);
       }
       catch (e) {
         console.error(e);
@@ -20,49 +24,45 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (mods) {
-      async function getData() {
+    if (modNames) {
+      async function getModNames() {
         try {
           const regex = /[a-z]/i;
           const newMods = {};
-          for (const mod in mods) {
-            if (mods[mod].modrinth) {
+          for (const mod in modNames) {
+            const modObj = modNames[mod];
+            if (modObj.modrinth) {
               const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
               const modData = await response.json();
-              modData.game_versions = modData.game_versions.filter(item => !regex.test(item));
+              modData.game_versions = modData.game_versions.filter(version => !regex.test(version));
               newMods[mod] = modData;
+              if (mod === "fabric-api") {
+                setGameVersions(modData.game_versions.reverse());
+              }
             }
-            else if (mods[mod].curseforge) {
+            else if (modObj.curseforge) {
               console.log(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
             }
             else {
               console.log(`${mod} doesn't exist on modrinth or curseforge`);
             }
           }
-          setData(newMods);
+          setAllMods(newMods);
         }
         catch (e) {
           console.error(e);
         }
       }
-      getData();
+      getModNames();
     }
-  }, [mods]);
+  }, [modNames]);
 
   return (
     <main>
+      <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} />
       <div id="mods-div">
-        {data ? (
-          Object.keys(data).map(mod => {
-            const modObj = data[mod];
-            return (
-              <div key={mod} className="mod-div">
-                <span>{modObj.title} latest verson: {modObj.game_versions[modObj.game_versions.length - 1]}</span>
-                <a href={`https://modrinth.com/mod/${mod}`} target="_blank" rel="noreferrer" className="mod-source-url">Download page </a>
-                {modObj.source_url ? <a href={modObj.source_url} target="_blank" rel="noreferrer" className="mod-source-url">Source url</a> : <span>No source url</span>}
-              </div>
-            )
-          })
+        {allMods ? (
+          <ModsContainer allMods={allMods} displayGameVersion={displayGameVersion} />
         ) : (
           <p>Loading...</p>
         )}

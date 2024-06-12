@@ -10,7 +10,9 @@
   flex-direction: column;
   margin: 1%;
   border: red 1px solid;
-  padding: 2%;
+  padding: 1em;
+  max-width: 22%;
+  height: fit-content;
 }
 
 .mod-source-url {
@@ -22,4 +24,26 @@
 #mods-div {
   display: flex;
   flex-flow: row wrap;
+}
+
+.mod-div>* {
+  width: fit-content;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#filter-form {
+  margin-top: .5em;
+  padding: 0.5em;
+  border: rgba(27, 217, 106, .7) solid 2px;
+  border-radius: 10px;
+}
+
+#filter-form>select {
+  padding: 0.2em;
+  border: 1px red solid;
 }
