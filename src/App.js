@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./css/App.css";
 import FilterButton from "./components/FilterButton";
 import ModsContainer from "./components/ModsContainer";
+import SortButton from "./components/SortButton";
 
 export default function App() {
   const [allMods, setAllMods] = useState();
@@ -28,25 +29,27 @@ export default function App() {
       async function getModNames() {
         try {
           const regex = /[a-z]/i;
-          const newMods = {};
+          const newMods = [];
           for (const mod in modNames) {
             const modObj = modNames[mod];
             if (modObj.modrinth) {
               const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
               const modData = await response.json();
               modData.game_versions = modData.game_versions.filter(version => !regex.test(version));
-              newMods[mod] = modData;
+              modData.name = mod;
+              newMods.push(modData);
               if (mod === "fabric-api") {
                 setGameVersions(modData.game_versions.reverse());
               }
             }
             else if (modObj.curseforge) {
-              console.log(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
+              console.warn(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
             }
             else {
-              console.log(`${mod} doesn't exist on modrinth or curseforge`);
+              console.warn(`${mod} doesn't exist on modrinth or curseforge!`);
             }
           }
+          console.log(newMods);
           setAllMods(newMods);
         }
         catch (e) {
@@ -59,14 +62,15 @@ export default function App() {
 
   return (
     <main>
-      <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} />
-      <div id="mods-div">
-        {allMods ? (
-          <ModsContainer allMods={allMods} displayGameVersion={displayGameVersion} />
-        ) : (
-          <p>Loading...</p>
-        )}
+      <div>
+        <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} />
+        <SortButton allMods={allMods} setAllMods={setAllMods} />
       </div>
+      {allMods ? (
+        <ModsContainer allMods={allMods} displayGameVersion={displayGameVersion} />
+      ) : (
+        <p>Loading...</p>
+      )}
     </main>
   );
 }

@@ -15,7 +15,7 @@ export default function FilterButton({ gameVersions, setDisplayGameVersion }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} id="filter-form">
+        <form onSubmit={handleSubmit} className="sort-filter-form">
             <select name="filter">
                 <option >All</option>
                 {gameVersions ? gameVersions.map(version => <option key={version}>{version}</option>) : ""}

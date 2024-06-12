@@ -8,7 +8,7 @@
 .mod-div {
   display: flex;
   flex-direction: column;
-  margin: 1%;
+  margin: .5em;
   border: red 1px solid;
   padding: 1em;
   max-width: 22%;
@@ -21,9 +21,10 @@
   font-weight: bolder;
 }
 
-#mods-div {
+#mods-container {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-around;
 }
 
 .mod-div>* {
@@ -36,14 +37,14 @@ main {
   align-items: center;
 }
 
-#filter-form {
+.sort-filter-form {
   margin-top: .5em;
   padding: 0.5em;
   border: rgba(27, 217, 106, .7) solid 2px;
   border-radius: 10px;
 }
 
-#filter-form>select {
+.sort-filter-form>select {
   padding: 0.2em;
   border: 1px red solid;
 }
