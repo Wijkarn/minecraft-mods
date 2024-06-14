@@ -1,15 +1,15 @@
-export default function ModCard({ mod, modObj, displayGameVersion }) {
-    const modGameVersion = modObj.game_versions;
-    const displayMod = displayGameVersion ? modGameVersion.includes(displayGameVersion) : true;
-    const latestVersion = mod !== "fabric-api" ? modGameVersion[modGameVersion.length - 1] : modGameVersion[0];
+export default function ModCard({ mod, displayGameVersion }) {
+    const modGameVersion = mod.game_versions;
+    if (!(displayGameVersion ? modGameVersion.includes(displayGameVersion) : true)) return;
+    const latestVersion = modGameVersion[modGameVersion.length - 1];
+    const classes = `mod-source-url ${mod.modrinth ? "modrinth-url" : "curseforge-url"}`;
 
-    return displayMod ? (
-        <div key={mod} className="mod-div">
-            <span>{modObj.title} latest verson: {latestVersion}</span>
-            <a href={`https://modrinth.com/mod/${mod}`} target="_blank" rel="noreferrer" className="mod-source-url">Download page </a>
-            {modObj.source_url ? <a href={modObj.source_url} target="_blank" rel="noreferrer" className="mod-source-url">Source url</a> : <span>No source url</span>}
-            <span>{modObj.description}</span>
+    return (
+        <div key={mod.name} className="mod-div">
+            <span>{mod.title} latest verson: {latestVersion}</span>
+            <a href={`https://modrinth.com/mod/${mod.name}`} target="_blank" rel="noreferrer" className={classes}>Download page </a>
+            {mod.source_url ? <a href={mod.source_url} target="_blank" rel="noreferrer" className={classes}>Source url</a> : <span>No source url</span>}
+            <span>{mod.description}</span>
         </div>
-    )
-        : "";
+    );
 }

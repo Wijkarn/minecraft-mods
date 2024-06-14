@@ -1,5 +1,14 @@
 export default function SortButton({ allMods, setAllMods }) {
 
+    const options = [
+        "Title (asc)",
+        "Title (desc)",
+        "Updated (asc)",
+        "Updated (desc)",
+        "Name (asc)",
+        "Name (desc)",
+    ];
+
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -7,7 +16,7 @@ export default function SortButton({ allMods, setAllMods }) {
         const formJson = Object.fromEntries(formData.entries());
         const formSorted = formJson.sort;
 
-        let sortedMods = [...allMods];
+        const sortedMods = [...allMods];
 
         if (formSorted.includes("desc")) {
             const sort = formSorted.replace(" (desc)", "").toLowerCase().trim();
@@ -24,10 +33,7 @@ export default function SortButton({ allMods, setAllMods }) {
     return (
         <form onSubmit={handleSubmit} className="sort-filter-form">
             <select name="sort">
-                <option>Name (asc)</option>
-                <option>Name (desc)</option>
-                <option>Updated (desc)</option>
-                <option>Updated (asc)</option>
+                {options.map(option => <option key={option}>{option}</option>)}
             </select>
             <button className="sort-filter-button">Sort</button>
         </form>

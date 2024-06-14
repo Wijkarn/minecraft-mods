@@ -17,8 +17,15 @@
 
 .mod-source-url {
   text-decoration: none;
-  color: rgba(27, 217, 106, .7);
   font-weight: bolder;
+}
+
+.modrinth-url {
+  color: #1bd96ab3;
+}
+
+.curseforge-url {
+  color: #f16436;
 }
 
 #mods-container {
