@@ -1,9 +1,9 @@
 import ModCard from "./ModCard";
 
-export default function ModsContainer({ allMods, displayGameVersion }) {
+export default function ModsContainer({ mods, displayGameVersion }) {
     return (
         <div id="mods-container">
-            {allMods.map(mod => <ModCard key={mod.name} mod={mod} displayGameVersion={displayGameVersion} />)}
+            {mods.map(mod => <ModCard key={mod.name} mod={mod} displayGameVersion={displayGameVersion} />)}
         </div>
     );
 }

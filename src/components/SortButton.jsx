@@ -1,4 +1,4 @@
-export default function SortButton({ allMods, setAllMods }) {
+export default function SortButton({ mods, setMods }) {
 
     const options = [
         "Title (asc)",
@@ -16,7 +16,7 @@ export default function SortButton({ allMods, setAllMods }) {
         const formJson = Object.fromEntries(formData.entries());
         const formSorted = formJson.sort;
 
-        const sortedMods = [...allMods];
+        const sortedMods = [...mods];
 
         if (formSorted.includes("desc")) {
             const sort = formSorted.replace(" (desc)", "").toLowerCase().trim();
@@ -27,7 +27,7 @@ export default function SortButton({ allMods, setAllMods }) {
             sortedMods.sort((a, b) => a[sort].localeCompare(b[sort]));
         }
 
-        setAllMods(sortedMods);
+        setMods(sortedMods);
     }
 
     return (

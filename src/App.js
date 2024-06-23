@@ -5,79 +5,85 @@ import ModsContainer from "./components/ModsContainer";
 import SortButton from "./components/SortButton";
 
 export default function App() {
-  const [allMods, setAllMods] = useState();
-  const [modNames, setModNames] = useState();
+  const [modList, setModList] = useState();
+  const [mods, setMods] = useState();
   const [gameVersions, setGameVersions] = useState();
   const [displayGameVersion, setDisplayGameVersion] = useState();
 
   useEffect(() => {
-    async function mods() {
+    async function getModNames() {
       try {
         const response = await fetch("https://minecraft-mods-page-default-rtdb.europe-west1.firebasedatabase.app/.json");
         const data = await response.json();
 
-        setModNames(data);
+        setModList(data);
       }
       catch (e) {
         console.error(e);
       }
     }
 
-    mods();
+    getModNames();
   }, []);
 
   useEffect(() => {
-    if (modNames) {
-      async function getModNames() {
-        try {
-          const regex = /[a-z]/i;
-          const newMods = [];
+    async function getMods() {
+      try {
+        const newModsArray = [];
 
-          for (const mod in modNames) {
-            const modObj = modNames[mod];
+        fetchMod("fabric-api", newModsArray);
 
-            if (modObj.modrinth) {
-              const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
-              const modData = await response.json();
+        for (const mod in modList) {
+          const modObj = modList[mod];
 
-              modData.game_versions = modData.game_versions.filter(version => !regex.test(version));
-              modData.name = mod;
-              newMods.push(modData);
-              modData.modrinth = true;
-
-              if (mod === "fabric-api") {
-                const versions = [...modData.game_versions].reverse();
-                setGameVersions(versions);
-              }
-            }
-            else if (modObj.curseforge) {
-              console.warn(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
-            }
-            else {
-              console.warn(`${mod} doesn't exist on modrinth or curseforge!`);
-            }
+          if (modObj.modrinth) {
+            await fetchMod(mod, newModsArray);
           }
+          else if (modObj.curseforge) {
+            console.warn(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
+          }
+          else {
+            console.warn(`${mod} doesn't exist on modrinth or curseforge!`);
+          }
+        }
 
-          newMods.sort((a, b) => a.title.localeCompare(b.title));
-          setAllMods(newMods);
-        }
-        catch (e) {
-          console.error(e);
-        }
+        newModsArray.sort((a, b) => a.title.localeCompare(b.title));
+        setMods(newModsArray);
       }
-
-      getModNames();
+      catch (e) {
+        console.error(e);
+      }
     }
-  }, [modNames]);
+    if (modList) {
+      getMods();
+    }
+  }, [modList]);
+
+  async function fetchMod(mod, newModsArray) {
+    const regex = /[a-z]/i;
+
+    const response = await fetch(`https://api.modrinth.com/v2/project/${mod}`);
+    const modData = await response.json();
+
+    modData.game_versions = modData.game_versions.filter(version => !regex.test(version));
+    modData.name = mod;
+    newModsArray.push(modData);
+    modData.modrinth = true;
+
+    if (mod === "fabric-api") {
+      const versions = [...modData.game_versions].reverse();
+      setGameVersions(versions);
+    }
+  }
 
   return (
     <main>
       <div>
         <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} />
-        <SortButton allMods={allMods} setAllMods={setAllMods} />
+        <SortButton mods={mods} setMods={setMods} />
       </div>
-      {allMods ? (
-        <ModsContainer allMods={allMods} displayGameVersion={displayGameVersion} />
+      {mods ? (
+        <ModsContainer mods={mods} displayGameVersion={displayGameVersion} />
       ) : (
         <p>Loading...</p>
       )}
