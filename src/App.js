@@ -31,23 +31,31 @@ export default function App() {
       try {
         const newModsArray = [];
 
-        fetchMod("fabric-api", newModsArray);
+        // Store promises in an array
+        const fetchPromises = [];
+
+        fetchPromises.push(fetchMod("fabric-api", newModsArray));
 
         for (const mod in modList) {
           const modObj = modList[mod];
 
           if (modObj.modrinth) {
-            await fetchMod(mod, newModsArray);
+            // Push the promise returned by fetchMod to the array
+            fetchPromises.push(fetchMod(mod, newModsArray));
           }
           else if (modObj.curseforge) {
-            console.warn(`${mod} doesn't exist on modrinth. But ${mod} exists on Curseforge.`);
+            console.warn(`${mod} doesn't exist on Modrinth. But ${mod} exists on Curseforge.`);
           }
           else {
-            console.warn(`${mod} doesn't exist on modrinth or curseforge!`);
+            console.warn(`${mod} doesn't exist on Modrinth or Curseforge!`);
           }
         }
 
+        // Wait for all fetchMod promises to resolve
+        await Promise.all(fetchPromises);
+
         newModsArray.sort((a, b) => a.title.localeCompare(b.title));
+
         setMods(newModsArray);
       }
       catch (e) {
