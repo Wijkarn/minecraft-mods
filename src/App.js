@@ -30,8 +30,6 @@ export default function App() {
     async function getMods() {
       try {
         const newModsArray = [];
-
-        // Store promises in an array
         const fetchPromises = [];
 
         fetchPromises.push(fetchMod("fabric-api", newModsArray));
@@ -39,19 +37,22 @@ export default function App() {
         for (const mod in modList) {
           const modObj = modList[mod];
 
-          if (modObj.modrinth) {
-            // Push the promise returned by fetchMod to the array
-            fetchPromises.push(fetchMod(mod, newModsArray));
-          }
-          else if (modObj.curseforge) {
-            console.warn(`${mod} doesn't exist on Modrinth. But ${mod} exists on Curseforge.`);
+          if (!modObj.hidden) {
+            if (modObj.modrinth) {
+              fetchPromises.push(fetchMod(mod, newModsArray));
+            }
+            else if (modObj.curseforge) {
+              console.warn(`${mod} doesn't exist on Modrinth. But ${mod} exists on Curseforge.`);
+            }
+            else {
+              console.warn(`${mod} doesn't exist on Modrinth or Curseforge!`);
+            }
           }
           else {
-            console.warn(`${mod} doesn't exist on Modrinth or Curseforge!`);
+            console.warn(`${mod} is hidden`);
           }
         }
 
-        // Wait for all fetchMod promises to resolve
         await Promise.all(fetchPromises);
 
         newModsArray.sort((a, b) => a.title.localeCompare(b.title));
@@ -75,8 +76,8 @@ export default function App() {
 
     modData.game_versions = modData.game_versions.filter(version => !regex.test(version));
     modData.name = mod;
-    newModsArray.push(modData);
     modData.modrinth = true;
+    newModsArray.push(modData);
 
     if (mod === "fabric-api") {
       const versions = [...modData.game_versions].reverse();

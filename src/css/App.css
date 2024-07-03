@@ -55,3 +55,8 @@ main {
   padding: 0.2em;
   border: 1px red solid;
 }
+
+time {
+  text-decoration: underline;
+  font-weight: bolder;
+}
