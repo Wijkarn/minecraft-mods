@@ -1,4 +1,4 @@
-export default function FilterButton({ gameVersions, setDisplayGameVersion }) {
+export default function FilterButton({ gameVersions, setDisplayGameVersion}) {
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -15,12 +15,14 @@ export default function FilterButton({ gameVersions, setDisplayGameVersion }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="sort-filter-form">
-            <select name="filter">
-                <option >All</option>
-                {gameVersions ? gameVersions.map(version => <option key={version}>{version}</option>) : ""}
-            </select>
-            <button className="sort-filter-button">Filter</button>
-        </form>
+        <>
+            <form onSubmit={handleSubmit} className="sort-filter-form">
+                <select name="filter">
+                    <option >All</option>
+                    {gameVersions ? gameVersions.map(version => <option key={version}>{version}</option>) : ""}
+                </select>
+                <button className="sort-filter-button">Filter</button>
+            </form>
+        </>
     );
 }

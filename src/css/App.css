@@ -45,7 +45,7 @@ main {
 }
 
 .sort-filter-form {
-  margin-top: .5em;
+  margin: .25em;
   padding: 0.5em;
   border: rgba(27, 217, 106, .7) solid 2px;
   border-radius: 10px;
@@ -59,4 +59,8 @@ main {
 time {
   text-decoration: underline;
   font-weight: bolder;
+}
+
+.not-button{
+  background-color: red;
 }

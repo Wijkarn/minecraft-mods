@@ -1,7 +1,7 @@
 import ModCard from "./ModCard";
 
-export default function ModsContainer({ mods, displayGameVersion }) {
-
+export default function ModsContainer({ mods, displayGameVersion, notShow }) {
+    
     function formatDateString(dateString) {
         const date = new Date(dateString);
 
@@ -16,7 +16,7 @@ export default function ModsContainer({ mods, displayGameVersion }) {
 
     return (
         <div id="mods-container">
-            {mods.map(mod => <ModCard key={mod.name} mod={mod} displayGameVersion={displayGameVersion} formatDateString={formatDateString}/>)}
+            {mods.map(mod => <ModCard key={mod.name} mod={mod} displayGameVersion={displayGameVersion} formatDateString={formatDateString} notShow={notShow} />)}
         </div>
     );
 }

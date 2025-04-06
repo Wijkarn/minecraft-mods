@@ -9,6 +9,7 @@ export default function App() {
   const [mods, setMods] = useState();
   const [gameVersions, setGameVersions] = useState();
   const [displayGameVersion, setDisplayGameVersion] = useState();
+  const [notShow, setNotShow] = useState(false);
 
   useEffect(() => {
     async function getModNames() {
@@ -85,14 +86,19 @@ export default function App() {
     }
   }
 
+  function handleNot() {
+      setNotShow(!notShow);
+  }
+
   return (
     <main>
       <div>
-        <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} />
+        <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion}/>
+        <button className="sort-filter-button not-button" onClick={handleNot}>Toggle not</button>
         <SortButton mods={mods} setMods={setMods} />
       </div>
       {mods ? (
-        <ModsContainer mods={mods} displayGameVersion={displayGameVersion} />
+        <ModsContainer mods={mods} displayGameVersion={displayGameVersion} notShow={notShow}/>
       ) : (
         <p>Loading...</p>
       )}

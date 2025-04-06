@@ -1,6 +1,13 @@
-export default function ModCard({ mod, displayGameVersion, formatDateString }) {
+export default function ModCard({ mod, displayGameVersion, formatDateString, notShow }) {
     const modGameVersion = mod.game_versions;
-    if (!(displayGameVersion ? modGameVersion.includes(displayGameVersion) : true)) return;
+
+    if (!(displayGameVersion ? modGameVersion.includes(displayGameVersion) : true)) {
+        if (!notShow) return;
+    }
+    else {
+        if (notShow) return;
+    }
+
     const latestVersion = modGameVersion[modGameVersion.length - 1];
     const classes = `mod-source-url ${mod.modrinth ? "modrinth-url" : "curseforge-url"}`;
 

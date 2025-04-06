@@ -1,3 +1,7 @@
+Start dev version with `npm run dev`
+`npm run clean` remove old build
+`npm run build` to build 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
