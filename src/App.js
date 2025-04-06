@@ -87,18 +87,19 @@ export default function App() {
   }
 
   function handleNot() {
-      setNotShow(!notShow);
+    if (displayGameVersion) setNotShow(!notShow);
+    else setNotShow(false);
   }
 
   return (
     <main>
       <div>
-        <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion}/>
+        <FilterButton gameVersions={gameVersions} setDisplayGameVersion={setDisplayGameVersion} setNotShow={setNotShow}/>
         <button className="sort-filter-button not-button" onClick={handleNot}>Toggle not</button>
         <SortButton mods={mods} setMods={setMods} />
       </div>
       {mods ? (
-        <ModsContainer mods={mods} displayGameVersion={displayGameVersion} notShow={notShow}/>
+        <ModsContainer mods={mods} displayGameVersion={displayGameVersion} notShow={notShow} />
       ) : (
         <p>Loading...</p>
       )}

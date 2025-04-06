@@ -1,4 +1,4 @@
-export default function FilterButton({ gameVersions, setDisplayGameVersion}) {
+export default function FilterButton({ gameVersions, setDisplayGameVersion, setNotShow}) {
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -8,6 +8,7 @@ export default function FilterButton({ gameVersions, setDisplayGameVersion}) {
 
         if (formFiltered === "All") {
             setDisplayGameVersion(null);
+            setNotShow(false);
             return;
         }
 
